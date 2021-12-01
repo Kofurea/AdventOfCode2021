@@ -1,16 +1,25 @@
-# This is a sample Python script.
+# Part 1
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+with open('Day01_input.txt', 'r') as file:
+    input_file = [int(line.strip()) for line in file]
 
+increased = 0
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+for i in range(len(input_file)):
+    if i != 0:
+        if input_file[i-1] < input_file[i]:
+            increased += 1
 
+#print(increased)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Part 2
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+increased_2 = 0
+
+for i in range(len(input_file)-3):
+    first = input_file[i]
+    second =  input_file[i+3]
+    if second > first:
+        increased_2 += 1
+
+print(increased_2)
