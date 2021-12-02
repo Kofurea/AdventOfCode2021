@@ -10,7 +10,7 @@ for i in range(len(input_file)):
         if input_file[i-1] < input_file[i]:
             increased += 1
 
-#print(increased)
+print("Answer part 1: " + str(increased))
 
 # Part 2
 
@@ -22,4 +22,4 @@ for i in range(len(input_file)-3):
     if second > first:
         increased_2 += 1
 
-print(increased_2)
+print("Answer part 2: " + str(increased_2))
