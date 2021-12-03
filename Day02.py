@@ -25,7 +25,7 @@ for i in range(len(input_split)):
     elif input_split[i][0] == 'down':
         submarine.depth += int(input_split[i][1])
 
-print("Answer part 1: " + str(submarine.horizontal * submarine.depth))
+print("Answer part 1: ", submarine.horizontal * submarine.depth)
 
 # Part 2
 
