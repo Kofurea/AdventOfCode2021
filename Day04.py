@@ -87,8 +87,6 @@ def run_bingo(bingo_boards, list_of_numbers, firstlast):
                                 winning_number = list_of_numbers[number]
                                 winning_board = bingo_boards[card].grid
 
-
-
     return winning_number, winning_board
 
 number, board = run_bingo(bingo_cards, called_numbers, "first")
