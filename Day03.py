@@ -75,7 +75,6 @@ def reduction(input_list, type):
     elif type == "CO2":
         keep_co = "0"
     else:
-        print("type", type)
         raise ValueError
 
     keep = ""
