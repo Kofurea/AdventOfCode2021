@@ -1,7 +1,10 @@
 # Part 1
 
+import time
 import re
 from functools import reduce
+
+start = time.time()
 
 class BingoCard:
     def __init__(self, input_grid):
@@ -31,7 +34,7 @@ for i in range(len(input_file)):
 
 for card in range(len(bingo_cards)):
     for row in range(len(bingo_cards[card].grid)):
-        bingo_cards[card].grid[row][0] = list(map(lambda n: int(n), re.split(" +", bingo_cards[card].grid[row][0])))
+        bingo_cards[card].grid[row][0] = list(map(lambda n: int(n), re.split("\s+", bingo_cards[card].grid[row][0])))
         bingo_cards[card].grid[row] = bingo_cards[card].grid[row][0]
 
 def run_bingo(bingo_boards, list_of_numbers, firstlast):
@@ -102,7 +105,7 @@ print("The answer to part 1 is:",
       reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
                                      [item for sublist in board for item in sublist])) * number)
 
-print("\n \n \n")
+print("\n \n")
 
 number, board = run_bingo(bingo_cards, called_numbers, "last")
 
@@ -115,3 +118,7 @@ print("Last called number:", number)
 print("The answer to part 2 is:",
       reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
                                      [item for sublist in board for item in sublist])) * number)
+
+end = time.time()
+
+print("Time elapsed:", end-start)

@@ -1,5 +1,9 @@
 # Part 1
 
+import time
+
+start = time.time()
+
 def power_calc(gamma, epsilon):
     power = gamma * epsilon
     return power
@@ -67,45 +71,46 @@ def life_support_rating_calc(oxygen_generator_rating, CO2_scrubber_rating):
 
 def reduction(input_list, type):
     if type == "oxygen":
-        keep_ox = "0"
+        keep_ox = "1"
     elif type == "CO2":
-        keep_co = "1"
+        keep_co = "0"
     else:
         print("type", type)
         raise ValueError
 
     keep = ""
 
-    for digit in range(len(input_list[0])):
-        new_list = list(filter(lambda x: x.startswith(keep), input_list)).copy()
-        count_0, count_1 = 0, 0
-        for row in new_list:
-            if row[digit] == '0':
-                count_0 += 1
-            elif row[digit] == '1':
-                count_1 += 1
+    new_list = list(filter(lambda x: x.startswith(keep), input_list)).copy()
+
+    for digit, _ in enumerate(input_list[0]):
+        nth_digit = []
+        for row, _ in enumerate(new_list):
+            nth_digit.append(new_list[row][digit])
+        if type == "oxygen":
+            if nth_digit.count('1') > nth_digit.count('0'):
+                keep += '1'
+            elif nth_digit.count('1') < nth_digit.count('0'):
+                keep += '0'
             else:
-                raise ValueError
-        if count_0 > count_1:
-            keep += "0"
-        elif count_0 < count_1:
-            keep += "1"
-        else:
-            if type == "oxygen":
                 keep += keep_ox
+        else:
+            if nth_digit.count('1') < nth_digit.count('0'):
+                keep += '1'
+            elif nth_digit.count('1') > nth_digit.count('0'):
+                keep += '0'
             else:
-                keep += keep_co
+                keep_co
 
-        new_list = list(filter(lambda x: x.startswith(keep), input_list)).copy()
+        new_list = list(filter(lambda x: x.startswith(keep), new_list))
 
-        if len(new_list) <= 1:
-            print("keep", keep)
-            print("newlist", new_list)
+        if len(new_list) == 1:
             return new_list
+
+    return new_list
 
 oxygen = reduction(input_file, "oxygen")
 CO2 = reduction(input_file, "CO2")
-print(oxygen)
-print(CO2)
 print("The answer to part 2 is: ", life_support_rating_calc(int(oxygen[0], 2), int(CO2[0], 2)))
 
+end = time.time()
+print("Elapsed time:", end-start)
