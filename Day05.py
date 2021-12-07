@@ -19,7 +19,7 @@ class LineSegment():
             if self.x_line == []:
                 self.x_line = [ self.x1 for _, _ in enumerate(self.y_line)]
             else:
-                self.y_line = [ self.x1 for _, _ in enumerate(self.x_line)]
+                self.y_line = [ self.y1 for _, _ in enumerate(self.x_line)]
             self.coordinates = np.array(list(zip(self.x_line, self.y_line)))
         else:
             pass
