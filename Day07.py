@@ -35,4 +35,4 @@ def day07():
 
     end = time.time()
 
-    print("Time elapsed:", end-start)
+    print("Time elapsed:", end-start, "\n")

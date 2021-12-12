@@ -48,4 +48,4 @@ def day02():
     print("Answer part 2: " + str(submarine.horizontal * submarine.depth))
 
     end = time.time()
-    print("Elapsed time:", end-start)
+    print("Elapsed time:", end-start, "\n")

@@ -88,4 +88,4 @@ def day05():
         print("The answer to", x, "is:", crosses)
 
     end = time.time()
-    print("Time elapsed:", end-start)
+    print("Time elapsed:", end-start, "\n")

@@ -113,4 +113,4 @@ def day03():
     print("The answer to part 2 is: ", life_support_rating_calc(int(oxygen[0], 2), int(CO2[0], 2)))
 
     end = time.time()
-    print("Elapsed time:", end-start)
+    print("Elapsed time:", end-start, "\n")

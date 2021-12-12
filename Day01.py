@@ -31,4 +31,4 @@ def day01():
     print("Answer part 2: " + str(increased_2))
 
     end = time.time()
-    print("Elapsed time:", end-start)
+    print("Elapsed time:", end-start, "\n")

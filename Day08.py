@@ -121,4 +121,4 @@ def day08():
 
     end = time.time()
 
-    print("The elapsed time is:", end-start)
+    print("The elapsed time is:", end-start, "\n")
