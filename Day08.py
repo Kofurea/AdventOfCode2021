@@ -67,7 +67,7 @@ def decode(clues):
         if len_five.count(char) == 3:
             if letter_to_position[char] == []:
                 letter_to_position[char] = 'g'
-    # Count for 9 occurrances, assing that 'f', and give the other letter of the number one 'c'
+    # Count for 9 occurrances, assigning that 'f', and give the other letter of the number one 'c'
     for char in set("".join(clues)):
         if list("".join(clues)).count(char) == 9:
             letter_to_position[char] = 'f'
@@ -78,29 +78,44 @@ def decode(clues):
 
 def decypher(decoder, code):
     number_lookup = [
-        [1, 2, 3, 5, 6, 7],  # 0
-        [3, 6],  # 1
-        [1, 3, 4, 5, 7],  # 2
-        [1, 3, 4, 6, 7],  # 3
-        [2, 3, 4, 6],  # 4
-        [1, 2, 4, 6, 7],  # 5
-        [1, 2, 4, 5, 6, 7],  # 6
-        [1, 3, 5],  # 7
-        [1, 2, 3, 4, 5, 6, 7, 8],  # 8
-        [1, 2, 3, 4, 5, 7, 8]  # 9
+        ['a', 'b', 'c', 'e', 'f', 'g'],# 0
+        ['c', 'f'],# 1
+        ['a', 'c', 'd', 'e', 'g'],  # 2
+        ['a', 'c', 'd', 'f', 'g'],  # 3
+        ['b', 'c', 'd', 'f'],  # 4
+        ['a', 'b', 'd', 'f', 'g'],  # 5
+        ['a', 'b', 'd', 'e', 'f', 'g'],  # 6
+        ['a', 'c', 'f'],  # 7
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'],  # 8
+        ['a', 'b', 'c', 'd', 'f', 'g']  # 9
     ]
 
-    value = 0
+    translated_code = [[], [], [], []]
 
-    return value
+    for index, number in enumerate(code):
+        digit = []
+        for letter in list(number):
+            digit.append(decoder[letter])
+        translated_code[index] = digit
+
+    value = []
+
+    for _, number in enumerate(translated_code):
+        for num_value, segments in enumerate(number_lookup):
+            if set(segments) ^ set(number) == set():
+                value.append(num_value)
+
+    value = "".join((str(i) for i in value))
+
+    return int(value)
 
 answers = []
 
 for line, _ in enumerate(list_of_clues):
-    decoding_dict = decode(line)
+    decoding_dict = decode(list_of_clues[line])
     answers.append(decypher(decoding_dict, list_of_questions[line]))
 
-print("The answer to part 2 is:", decoding_dict)
+print("The answer to part 2 is:", sum(answers))
 
 end = time.time()
 
