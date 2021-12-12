@@ -34,56 +34,58 @@ class Radar():
     def __init__(self):
         self.grid = [ [ 0 for _ in range(1000) ] for _ in range(1000) ]
 
-# Open the file
-with open('Day05_input.txt', 'r') as file:
-    input_file = [line.strip().split() for line in file]
+def day05():
+    print("Day 5")
+    # Open the file
+    with open('Day05_input.txt', 'r') as file:
+        input_file = [line.strip().split() for line in file]
 
-# Clean the data
-for row, _ in enumerate(input_file):
-    input_file[row][2] = int(input_file[row][2].split(',')[0]), int(input_file[row][2].split(',')[1])
-    del input_file[row][1]
-    input_file[row][0] = int(input_file[row][0].split(',')[0]), int(input_file[row][0].split(',')[1])
-    input_file[row] = [ item for sublist in input_file[row] for item in sublist ]
-
-for x in ["part 1", "part 2"]:
-
-    # Put the data in LineSegment classes
-    list_of_linesegments = []
-
+    # Clean the data
     for row, _ in enumerate(input_file):
-        list_of_linesegments.append(LineSegment(input_file[row][0],
-                                                input_file[row][1],
-                                                input_file[row][2],
-                                                input_file[row][3]))
-        list_of_linesegments[row].make_line()
+        input_file[row][2] = int(input_file[row][2].split(',')[0]), int(input_file[row][2].split(',')[1])
+        del input_file[row][1]
+        input_file[row][0] = int(input_file[row][0].split(',')[0]), int(input_file[row][0].split(',')[1])
+        input_file[row] = [ item for sublist in input_file[row] for item in sublist ]
 
-    # Prepare the list for part 1
+    for x in ["part 1", "part 2"]:
 
-    part1_linesegments = []
+        # Put the data in LineSegment classes
+        list_of_linesegments = []
 
-    for row, _ in enumerate(list_of_linesegments):
-        if x == "part 1":
-            if list_of_linesegments[row].part1 == True:
+        for row, _ in enumerate(input_file):
+            list_of_linesegments.append(LineSegment(input_file[row][0],
+                                                    input_file[row][1],
+                                                    input_file[row][2],
+                                                    input_file[row][3]))
+            list_of_linesegments[row].make_line()
+
+        # Prepare the list for part 1
+
+        part1_linesegments = []
+
+        for row, _ in enumerate(list_of_linesegments):
+            if x == "part 1":
+                if list_of_linesegments[row].part1 == True:
+                    part1_linesegments.append(list_of_linesegments[row])
+            else:
                 part1_linesegments.append(list_of_linesegments[row])
-        else:
-            part1_linesegments.append(list_of_linesegments[row])
 
-    # Create a grid and get to plotting
+        # Create a grid and get to plotting
 
-    screen = Radar()
+        screen = Radar()
 
-    for row, _ in enumerate(part1_linesegments):
-        for x_y, _ in enumerate(part1_linesegments[row].coordinates):
-            screen.grid[part1_linesegments[row].coordinates[x_y][0]][part1_linesegments[row].coordinates[x_y][1]] += 1
+        for row, _ in enumerate(part1_linesegments):
+            for x_y, _ in enumerate(part1_linesegments[row].coordinates):
+                screen.grid[part1_linesegments[row].coordinates[x_y][0]][part1_linesegments[row].coordinates[x_y][1]] += 1
 
-    crosses = 0
+        crosses = 0
 
-    for row, _ in enumerate(screen.grid):
-        for item, _ in enumerate(screen.grid[row]):
-            if screen.grid[row][item] > 1:
-                crosses += 1
+        for row, _ in enumerate(screen.grid):
+            for item, _ in enumerate(screen.grid[row]):
+                if screen.grid[row][item] > 1:
+                    crosses += 1
 
-    print("The answer to", x, "is:", crosses)
+        print("The answer to", x, "is:", crosses)
 
-end = time.time()
-print("Time elapsed:", end-start)
+    end = time.time()
+    print("Time elapsed:", end-start)

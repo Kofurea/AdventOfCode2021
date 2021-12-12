@@ -1,49 +1,51 @@
 # Part 1
-
 import time
 import re
 
-start = time.time()
+def day02():
+    print("Day 2")
 
-input_split = []
+    start = time.time()
 
-with open('Day02_input.txt', 'r') as file:
-    input_file = [line.strip() for line in file]
+    input_split = []
 
-for i,_ in enumerate(input_file):
-    input_split.append(re.findall('(\d+|[A-Za-z]+)', input_file[i]))
+    with open('Day02_input.txt', 'r') as file:
+        input_file = [line.strip() for line in file]
 
-class Submarine():
-    horizontal = 0
-    depth = 0
-    aim = 0 # For part 2
+    for i,_ in enumerate(input_file):
+        input_split.append(re.findall('(\d+|[A-Za-z]+)', input_file[i]))
 
-submarine = Submarine()
+    class Submarine():
+        horizontal = 0
+        depth = 0
+        aim = 0 # For part 2
 
-for i,_ in enumerate(input_split):
-    if input_split[i][0] == 'forward':
-        submarine.horizontal += int(input_split[i][1])
-    elif input_split[i][0] == 'up':
-        submarine.depth -= int(input_split[i][1])
-    elif input_split[i][0] == 'down':
-        submarine.depth += int(input_split[i][1])
+    submarine = Submarine()
 
-print("Answer part 1: ", submarine.horizontal * submarine.depth)
+    for i,_ in enumerate(input_split):
+        if input_split[i][0] == 'forward':
+            submarine.horizontal += int(input_split[i][1])
+        elif input_split[i][0] == 'up':
+            submarine.depth -= int(input_split[i][1])
+        elif input_split[i][0] == 'down':
+            submarine.depth += int(input_split[i][1])
 
-# Part 2
+    print("Answer part 1: ", submarine.horizontal * submarine.depth)
 
-submarine = Submarine()
+    # Part 2
 
-for i,_ in enumerate(input_split):
-    if input_split[i][0] == 'forward':
-        submarine.horizontal += int(input_split[i][1])
-        submarine.depth += submarine.aim * int(input_split[i][1])
-    elif input_split[i][0] == 'up':
-        submarine.aim -= int(input_split[i][1])
-    elif input_split[i][0] == 'down':
-        submarine.aim += int(input_split[i][1])
+    submarine = Submarine()
 
-print("Answer part 2: " + str(submarine.horizontal * submarine.depth))
+    for i,_ in enumerate(input_split):
+        if input_split[i][0] == 'forward':
+            submarine.horizontal += int(input_split[i][1])
+            submarine.depth += submarine.aim * int(input_split[i][1])
+        elif input_split[i][0] == 'up':
+            submarine.aim -= int(input_split[i][1])
+        elif input_split[i][0] == 'down':
+            submarine.aim += int(input_split[i][1])
 
-end = time.time()
-print("Elapsed time:", end-start)
+    print("Answer part 2: " + str(submarine.horizontal * submarine.depth))
+
+    end = time.time()
+    print("Elapsed time:", end-start)

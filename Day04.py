@@ -11,32 +11,6 @@ class BingoCard:
         self.grid = input_grid
         self.bingo = False # for part 2
 
-with open('Day04_input.txt', 'r') as file:
-    input_file = [line.strip() for line in file]
-
-# Setup Bingo Cards
-called_numbers = list(map(lambda n: int(n), input_file[0].split(',')))
-bingo_cards = []
-card_num = -1
-
-for i in range(len(input_file)):
-    if i == 0:
-        counter = 0
-    else:
-        counter += 1
-        if counter == 1:
-            card = []
-        else:
-            card.append([input_file[i]])
-            if len(card) == 5:
-                counter = 0
-                bingo_cards.append(BingoCard(card))
-
-for card in range(len(bingo_cards)):
-    for row in range(len(bingo_cards[card].grid)):
-        bingo_cards[card].grid[row][0] = list(map(lambda n: int(n), re.split("\s+", bingo_cards[card].grid[row][0])))
-        bingo_cards[card].grid[row] = bingo_cards[card].grid[row][0]
-
 def run_bingo(bingo_boards, list_of_numbers, firstlast):
     if firstlast != "first" and firstlast != "last":
         raise ValueError
@@ -89,34 +63,63 @@ def run_bingo(bingo_boards, list_of_numbers, firstlast):
 
     return winning_number, winning_board
 
-number, board = run_bingo(bingo_cards, called_numbers, "first")
+def day04():
+    print("Day 4")
+    with open('Day04_input.txt', 'r') as file:
+        input_file = [line.strip() for line in file]
 
-frmt = "{:>3}"*len(board[0])
+    # Setup Bingo Cards
+    called_numbers = list(map(lambda n: int(n), input_file[0].split(',')))
+    bingo_cards = []
+    card_num = -1
 
-print("The board:\n", frmt.format(*board[0]), "\n",
-      frmt.format(*board[1]), "\n",
-      frmt.format(*board[2]), "\n",
-      frmt.format(*board[3]), "\n",
-      frmt.format(*board[4]))
-print("Last called number:", number)
-print("The answer to part 1 is:",
-      reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
-                                     [item for sublist in board for item in sublist])) * number)
+    for i in range(len(input_file)):
+        if i == 0:
+            counter = 0
+        else:
+            counter += 1
+            if counter == 1:
+                card = []
+            else:
+                card.append([input_file[i]])
+                if len(card) == 5:
+                    counter = 0
+                    bingo_cards.append(BingoCard(card))
 
-print("\n \n")
+    for card in range(len(bingo_cards)):
+        for row in range(len(bingo_cards[card].grid)):
+            bingo_cards[card].grid[row][0] = list(
+                map(lambda n: int(n), re.split("\s+", bingo_cards[card].grid[row][0])))
+            bingo_cards[card].grid[row] = bingo_cards[card].grid[row][0]
 
-number, board = run_bingo(bingo_cards, called_numbers, "last")
+    number, board = run_bingo(bingo_cards, called_numbers, "first")
 
-print("The board:\n", frmt.format(*board[0]), "\n",
-      frmt.format(*board[1]), "\n",
-      frmt.format(*board[2]), "\n",
-      frmt.format(*board[3]), "\n",
-      frmt.format(*board[4]))
-print("Last called number:", number)
-print("The answer to part 2 is:",
-      reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
-                                     [item for sublist in board for item in sublist])) * number)
+    frmt = "{:>3}"*len(board[0])
 
-end = time.time()
+    print("The board:\n", frmt.format(*board[0]), "\n",
+          frmt.format(*board[1]), "\n",
+          frmt.format(*board[2]), "\n",
+          frmt.format(*board[3]), "\n",
+          frmt.format(*board[4]))
+    print("Last called number:", number)
+    print("The answer to part 1 is:",
+          reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
+                                         [item for sublist in board for item in sublist])) * number)
 
-print("Time elapsed:", end-start)
+    print("\n \n")
+
+    number, board = run_bingo(bingo_cards, called_numbers, "last")
+
+    print("The board:\n", frmt.format(*board[0]), "\n",
+          frmt.format(*board[1]), "\n",
+          frmt.format(*board[2]), "\n",
+          frmt.format(*board[3]), "\n",
+          frmt.format(*board[4]))
+    print("Last called number:", number)
+    print("The answer to part 2 is:",
+          reduce(lambda l,r: l+r, filter(lambda n: type(n) is int,
+                                         [item for sublist in board for item in sublist])) * number)
+
+    end = time.time()
+
+    print("Time elapsed:", end-start)

@@ -54,62 +54,63 @@ def analyse_input(file, type):
 
     return list_to_dec(binary)
 
+def day03():
+    print("Day 3")
+    with open('Day03_input.txt', 'r') as file:
+        input_file = [line.strip() for line in file]
 
-with open('Day03_input.txt', 'r') as file:
-    input_file = [line.strip() for line in file]
+    gamma_answer = analyse_input(input_file, "gamma")
+    epsilon_answer = analyse_input(input_file, "epsilon")
 
-gamma_answer = analyse_input(input_file, "gamma")
-epsilon_answer = analyse_input(input_file, "epsilon")
+    print("The answer to part 1 is: ", power_calc(gamma_answer, epsilon_answer))
 
-print("The answer to part 1 is: ", power_calc(gamma_answer, epsilon_answer))
+    # Part 2
 
-# Part 2
+    def life_support_rating_calc(oxygen_generator_rating, CO2_scrubber_rating):
+        answer = oxygen_generator_rating * CO2_scrubber_rating
+        return answer
 
-def life_support_rating_calc(oxygen_generator_rating, CO2_scrubber_rating):
-    answer = oxygen_generator_rating * CO2_scrubber_rating
-    return answer
-
-def reduction(input_list, type):
-    if type == "oxygen":
-        keep_ox = "1"
-    elif type == "CO2":
-        keep_co = "0"
-    else:
-        raise ValueError
-
-    keep = ""
-
-    new_list = list(filter(lambda x: x.startswith(keep), input_list)).copy()
-
-    for digit, _ in enumerate(input_list[0]):
-        nth_digit = []
-        for row, _ in enumerate(new_list):
-            nth_digit.append(new_list[row][digit])
+    def reduction(input_list, type):
         if type == "oxygen":
-            if nth_digit.count('1') > nth_digit.count('0'):
-                keep += '1'
-            elif nth_digit.count('1') < nth_digit.count('0'):
-                keep += '0'
-            else:
-                keep += keep_ox
+            keep_ox = "1"
+        elif type == "CO2":
+            keep_co = "0"
         else:
-            if nth_digit.count('1') < nth_digit.count('0'):
-                keep += '1'
-            elif nth_digit.count('1') > nth_digit.count('0'):
-                keep += '0'
+            raise ValueError
+
+        keep = ""
+
+        new_list = list(filter(lambda x: x.startswith(keep), input_list)).copy()
+
+        for digit, _ in enumerate(input_list[0]):
+            nth_digit = []
+            for row, _ in enumerate(new_list):
+                nth_digit.append(new_list[row][digit])
+            if type == "oxygen":
+                if nth_digit.count('1') > nth_digit.count('0'):
+                    keep += '1'
+                elif nth_digit.count('1') < nth_digit.count('0'):
+                    keep += '0'
+                else:
+                    keep += keep_ox
             else:
-                keep_co
+                if nth_digit.count('1') < nth_digit.count('0'):
+                    keep += '1'
+                elif nth_digit.count('1') > nth_digit.count('0'):
+                    keep += '0'
+                else:
+                    keep_co
 
-        new_list = list(filter(lambda x: x.startswith(keep), new_list))
+            new_list = list(filter(lambda x: x.startswith(keep), new_list))
 
-        if len(new_list) == 1:
-            return new_list
+            if len(new_list) == 1:
+                return new_list
 
-    return new_list
+        return new_list
 
-oxygen = reduction(input_file, "oxygen")
-CO2 = reduction(input_file, "CO2")
-print("The answer to part 2 is: ", life_support_rating_calc(int(oxygen[0], 2), int(CO2[0], 2)))
+    oxygen = reduction(input_file, "oxygen")
+    CO2 = reduction(input_file, "CO2")
+    print("The answer to part 2 is: ", life_support_rating_calc(int(oxygen[0], 2), int(CO2[0], 2)))
 
-end = time.time()
-print("Elapsed time:", end-start)
+    end = time.time()
+    print("Elapsed time:", end-start)
