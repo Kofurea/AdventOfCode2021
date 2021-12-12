@@ -76,22 +76,35 @@ for row, line in enumerate(list_of_clues):
     four = [x for x in line if len(x) == 4]
     decode2decode4 = four[0].replace(one[0][0], '').replace(one[0][1], '')
     # The common set between all 5 lengths are digit 1, 4 and 7 (unspecified). Combined with the last this gives us decode 2, 4 and 7. The last decode is 5
-    decodefivewithout147 = [x for x in [x.replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist] if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[0], '').replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist] if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[1], '').replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist] if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[2], '') for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist]] if x != '']
-    decode[2] = [x for x in list(set(decodefivewithout147)) if x != one[0][0] and x != one[0][1] and x != four[0][0] and x != four[0][1] and x != four[0][2] and x != four[0][3]][0]
-    decode[5] = [x for x in list(set(decodefivewithout147)) if x != one[0][0] and x != one[0][1] and x != decode[2]][0]
-    decode[4] = [x for x in four[0] if x != decode[2] and x != decode[3] and x != decode[5] and x != decode[6]][0]
-    decode[7] = [x for x in list(set([item for sublist in line for item in sublist])) if x != decode[1] and x != decode[2] and  x != decode[3] and  x != decode[4] and  x != decode[5] and  x != decode[6]][0]
+    decodefivewithout147 = [x for x in
+                            [x.replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist]
+                                                 if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[0], '')
+                                 .replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist]
+                                                    if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[1], '')
+                                 .replace(list(set([x for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist]
+                                                    if [item for sublist in [x for x in line if len(x) == 5] for item in sublist].count(x) == 3]))[2], '')
+                             for x in [item for sublist in [x for x in line if len(x) == 5] for item in sublist]] if x != '']
+    decode[2] = [x for x in list(set(decodefivewithout147))
+                 if x != one[0][0] and x != one[0][1] and x != four[0][0] and x != four[0][1] and x != four[0][2] and x != four[0][3]][0]
+    decode[5] = [x for x in list(set(decodefivewithout147))
+                 if x != one[0][0] and x != one[0][1] and x != decode[2]][0]
+    decode[4] = [x for x in four[0]
+                 if x != decode[2] and x != decode[3] and x != decode[5] and x != decode[6]][0]
+    decode[7] = [x for x in list(set([item for sublist in line for item in sublist]))
+                 if x != decode[1] and x != decode[2] and  x != decode[3] and  x != decode[4] and  x != decode[5] and  x != decode[6]][0]
     invert_decode = {v: k for k, v in decode.items()}
-    for _, clue in enumerate(list_of_questions):
-        for _, item in enumerate(clue):
-            code = []
-            for _, letter in enumerate(item):
-                code.append(invert_decode[letter])
-            for index,_ in enumerate(number_lookup):
-                if [item for item in code if item not in number_lookup[index]] == []:
-                    answer += index
 
-print(answer)
+    for item in list_of_questions[row]:
+        code = []
+        combined_number = []
+        for _, letter in enumerate(item):
+            code.append(invert_decode[letter])
+        for index, item in enumerate(number_lookup):
+            if [item for item in code if item not in number_lookup[index]] == []:
+                combined_number.append(str(index))
+        answer += int("".join(combined_number))
+
+print("The answer to part 2 is:", answer)
 
 end = time.time()
 
