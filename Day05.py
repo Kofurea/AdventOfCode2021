@@ -14,15 +14,21 @@ class LineSegment():
     def make_line(self):
         if self.x1 == self.x2 or self.y1 == self.y2:
             self.part1 = True
-            self.x_line = list(range(min([self.x1,self.x2]), max([self.x1,self.x2])))
-            self.y_line = list(range(min([self.y1,self.y2]), max([self.y1,self.y2])))
-            if self.x_line == []:
-                self.x_line = [ self.x1 for _, _ in enumerate(self.y_line)]
-            else:
+            self.x_line = list(range(min([self.x1,self.x2]), max([self.x1,self.x2])+1))
+            self.y_line = list(range(min([self.y1,self.y2]), max([self.y1,self.y2])+1))
+            if self.y1 == self.y2:
                 self.y_line = [ self.y1 for _, _ in enumerate(self.x_line)]
+            elif self.x1 == self.x2:
+                self.x_line = [ self.x1 for _, _ in enumerate(self.y_line)]
             self.coordinates = np.array(list(zip(self.x_line, self.y_line)))
         else:
-            pass
+            self.x_line = list(range(min([self.x1,self.x2]), max([self.x1,self.x2])+1))
+            if self.x1 > self.x2:
+                self.x_line.reverse()
+            self.y_line = list(range(min([self.y1,self.y2]), max([self.y1,self.y2])+1))
+            if self.y1 > self.y2:
+                self.y_line.reverse()
+            self.coordinates = np.array(list(zip(self.x_line, self.y_line)))
 
 class Radar():
     def __init__(self):
@@ -39,41 +45,45 @@ for row, _ in enumerate(input_file):
     input_file[row][0] = int(input_file[row][0].split(',')[0]), int(input_file[row][0].split(',')[1])
     input_file[row] = [ item for sublist in input_file[row] for item in sublist ]
 
-# Put the data in LineSegment classes
+for x in ["part 1", "part 2"]:
 
-list_of_linesegments = []
+    # Put the data in LineSegment classes
+    list_of_linesegments = []
 
-for row, _ in enumerate(input_file):
-    list_of_linesegments.append(LineSegment(input_file[row][0],
-                                            input_file[row][1],
-                                            input_file[row][2],
-                                            input_file[row][3]))
-    list_of_linesegments[row].make_line()
+    for row, _ in enumerate(input_file):
+        list_of_linesegments.append(LineSegment(input_file[row][0],
+                                                input_file[row][1],
+                                                input_file[row][2],
+                                                input_file[row][3]))
+        list_of_linesegments[row].make_line()
 
-# Prepare the list for part 1
+    # Prepare the list for part 1
 
-part1_linesegments = []
+    part1_linesegments = []
 
-for row, _ in enumerate(list_of_linesegments):
-    if list_of_linesegments[row].part1 == True:
-        part1_linesegments.append(list_of_linesegments[row])
+    for row, _ in enumerate(list_of_linesegments):
+        if x == "part 1":
+            if list_of_linesegments[row].part1 == True:
+                part1_linesegments.append(list_of_linesegments[row])
+        else:
+            part1_linesegments.append(list_of_linesegments[row])
 
-# Create a grid and get to plotting
+    # Create a grid and get to plotting
 
-screen = Radar()
+    screen = Radar()
 
-for row, _ in enumerate(part1_linesegments):
-    for x_y, _ in enumerate(part1_linesegments[row].coordinates):
-        screen.grid[part1_linesegments[row].coordinates[x_y][0]][part1_linesegments[row].coordinates[x_y][1]] += 1
+    for row, _ in enumerate(part1_linesegments):
+        for x_y, _ in enumerate(part1_linesegments[row].coordinates):
+            screen.grid[part1_linesegments[row].coordinates[x_y][0]][part1_linesegments[row].coordinates[x_y][1]] += 1
 
-crosses = 0
+    crosses = 0
 
-for row, _ in enumerate(screen.grid):
-    for item, _ in enumerate(screen.grid[row]):
-        if screen.grid[row][item] > 1:
-            crosses += 1
+    for row, _ in enumerate(screen.grid):
+        for item, _ in enumerate(screen.grid[row]):
+            if screen.grid[row][item] > 1:
+                crosses += 1
 
-print(crosses)
+    print("The answer to", x, "is:", crosses)
 
 end = time.time()
 print("Time elapsed:", end-start)
