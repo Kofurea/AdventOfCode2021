@@ -9,5 +9,6 @@ from Day07 import *
 from Day08 import *
 from Day09 import *
 from Day10 import *
+from Day11 import *
 
-function = day10()
+function = day11()
