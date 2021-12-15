@@ -67,7 +67,7 @@ def day13():
         for item_index, item in enumerate(line):
             if item == 0:
                 print_line.append("  ")
-            else:R
+            else:
                 if len(str(item)) == 1:
                     print_line.append(" " + str(item))
                 else:
