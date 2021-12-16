@@ -9,7 +9,7 @@ def day14():
     starting_polymer = input_file[0][0]
     translation_rules = input_file[2:]
 
-    testing = True
+    testing = False
     if testing:
         starting_polymer = 'NNCB'
         translation_rules = [['CH', 'B'], ['HH', 'N'], ['CB', 'H'], ['NH', 'C'], ['HB', 'C'],
@@ -38,7 +38,7 @@ def day14():
 
     # Then we create our model
 
-    for part in ["part1", "part2"]:
+    for part in ["part2"]:
         if part == "part1":
             steps = 11
         if part == "part2":

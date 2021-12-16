@@ -13,5 +13,7 @@ from Day11 import *
 from Day12 import *
 from Day13 import *
 from Day14 import *
+from Day15 import *
+from Day16 import *
 
-function = day14()
+function = day16()
