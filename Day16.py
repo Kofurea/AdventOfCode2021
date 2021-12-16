@@ -10,6 +10,7 @@ def get_version_id(binary_list):
     id = bin_to_int(binary_list[3:6])
     return version, id
 
+# Dit moet wss "process literal" worden
 def process_type4(binary_list):
     # The version and id bits are already removed
     packet_contents = []
