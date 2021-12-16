@@ -1,5 +1,25 @@
 import time
 
+def bin_to_int(binary_list):
+    return int(''.join(binary_list),2)
+
+def get_version_id(binary_list):
+    if len(binary_list) < 6:
+        raise ValueError
+    version = bin_to_int(binary_list[:3])
+    id = bin_to_int(binary_list[3:6])
+    return version, id
+
+def process_type4(binary_list):
+    # The version and id bits are already removed
+    packet_contents = []
+
+
+    return packet_contents, bits_processed
+
+def process_operant():
+    pass
+
 def day16():
     start = time.time()
 
@@ -9,7 +29,9 @@ def day16():
     testing = True
     if testing:
         input_file = 'D2FE28'
-        #input_file = '36006F45291200'
+        #input_file = '38006F45291200'
+        #input_file = 'EE00D40C823060'
+        #input_file = '8A004A801A8002F478'
 
     input_file = [letter for substring in input_file for letter in substring]
 
@@ -19,52 +41,20 @@ def day16():
               'C': '1100', 'D': '1101', 'E': '1110', 'F': '1111'}
 
     binary = []
-
     for letter in input_file:
         binary.extend(bitmap[letter])
 
+    # Part 1 answers
     version = []
 
-    while len(binary) > 0:
-        length_packet = 0
-        list_of_packet_contents = []
+    while binary != []:
+        # Start processing the next chunk
+        chunk_version, chunk_id = get_version_id(binary)
+        del binary[:6]
+        version.append(chunk_version)
 
-        # Retrieve and remove the packet version
-        packetversion = ''.join(binary[:3])
-        version.append(int(packetversion, 2))
-        del binary[:3]
-        length_packet += 3
 
-        # Retrieve and remove the packet id
-        packetid = int(''.join(binary[:3]), 2)
-        del binary[:3]
-        length_packet += 3
-
-        # ID 4 : Literal value
-        if packetid == 4:
-            packet = []
-            # If the next chunk is not the final chunk
-            while binary[0] == '1':
-                # Delete the prefix
-                del binary[0]
-                packet.append(binary[:4])
-                del binary[:4]
-                length_packet += 5
-            # When its the last chunk, repeat this one more time
-            del binary[0]
-            packet.append(binary[:4])
-            del binary[:4]
-            length_packet += 5
-            list_of_packet_contents.append(''.join([item for sublist in packet for item in sublist]))
-
-        # Remove padding 0s
-        while binary[0] == '0' and length_packet % 4 != 0:
-            del binary[0]
-            if binary == []:
-                break
-    print(list_of_packet_contents)
-
-    print("The answer to part 1 is:", sum(version))
+    print("The answer to part 1 is:", sum(version), version)
 
     end = time.time()
 
