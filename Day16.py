@@ -10,11 +10,18 @@ def get_version_id(binary_list):
     id = bin_to_int(binary_list[3:6])
     return version, id
 
-# Dit moet wss "process literal" worden
-def process_type4(binary_list):
+def process_literal(binary_list):
     # The version and id bits are already removed
     packet_contents = []
+    bits_processed = 0
 
+    for index, number in enumerate(binary_list):
+        packet_contents.append(''.join(binary_list[index+bits_processed+1:index+bits_processed+4]))
+        bits_processed += 5
+        if binary_list[index+bits_processed] == 0:
+            break
+
+    packet_contents = ''.join(packet_contents)
 
     return packet_contents, bits_processed
 
@@ -53,6 +60,8 @@ def day16():
         chunk_version, chunk_id = get_version_id(binary)
         del binary[:6]
         version.append(chunk_version)
+        packet_content, bits = process_literal(binary)
+
 
 
     print("The answer to part 1 is:", sum(version), version)
