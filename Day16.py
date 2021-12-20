@@ -1,47 +1,64 @@
 import time
 
-def bin_to_int(binary_list):
-    return int(''.join(binary_list),2)
+def get_version(binary_list):
+    version.append(''.join(binary_list[:3]))
+    del binary_list[:3]
+    return binary_list
 
-def get_version_id(binary_list):
-    if len(binary_list) < 6:
-        raise ValueError
-    version = bin_to_int(binary_list[:3])
-    id = bin_to_int(binary_list[3:6])
-    return version, id
+def get_id(binary_list):
+    id = int(''.join(binary_list[:3]), 2)
+    del binary_list[:3]
+    return binary_list, id
 
-def process_literal(binary_list):
-    # The version and id bits are already removed
-    packet_contents = []
-    bits_processed = 0
+def interpret_literal(binary_list):
+    unpacked, stop, bits_processed = [], False, 6
 
-    for index, number in enumerate(binary_list):
-        packet_contents.append(''.join(binary_list[index+bits_processed+1:index+bits_processed+4]))
+    # Interpret
+    while not stop:
+        if binary_list[0] == '0':
+            stop = True
+        del binary_list[0]
+        for bit in range(4):
+            unpacked.append(binary_list[bit])
+        del binary_list[:4]
         bits_processed += 5
-        if binary_list[index+bits_processed] == 0:
-            break
 
-    packet_contents = ''.join(packet_contents)
+    # Remove tailing 0s
+    if bits_processed % 4 != 0:
+        del binary_list[:4 - bits_processed % 4]
 
-    return packet_contents, bits_processed
+    return binary_list, unpacked
 
-def process_operant():
-    pass
+def process_chunk(binary_list):
+    binary_list = get_version(binary_list)
+    binary_list, id = get_id(binary_list)
+    if id == 4:
+        binary_list, unpacked = interpret_literal(binary_list)
+        packages.append(int(''.join(unpacked), 2))
+    if id != 4:
+        len_type_id = binary_list[0]
+        del binary_list[0]
+        if len_type_id == '1':
+            num_subpackets = int(''.join(binary_list[:11]))
+            del binary_list[:11]
+            for i in range(num_subpackets):
+                binary_list = process_chunk(binary_list)
+        if len_type_id == '0':
+            len_subpackets = int(''.join(binary_list[:15]))
+            del binary_list[:15]
+            counter = len(binary_list)
+            while len(binary_list) != counter - len_subpackets:
+                process_chunk(binary_list)
+
+    return binary_list
 
 def day16():
     start = time.time()
 
-    with open('Day16_input.txt') as file:
-        input_file = [line.strip() for line in file]
-
     testing = True
     if testing:
-        input_file = 'D2FE28'
-        #input_file = '38006F45291200'
-        #input_file = 'EE00D40C823060'
-        #input_file = '8A004A801A8002F478'
-
-    input_file = [letter for substring in input_file for letter in substring]
+        input_file = "D2FE28" # Example one
+        input_file = "38006F45291200" # Example two
 
     bitmap = {'0': '0000', '1': '0001', '2': '0010', '3': '0011',
               '4': '0100', '5': '0101', '6': '0110', '7': '0111',
@@ -52,19 +69,16 @@ def day16():
     for letter in input_file:
         binary.extend(bitmap[letter])
 
-    # Part 1 answers
+    global version
     version = []
+    global packages
+    packages = []
 
-    while binary != []:
-        # Start processing the next chunk
-        chunk_version, chunk_id = get_version_id(binary)
-        del binary[:6]
-        version.append(chunk_version)
-        packet_content, bits = process_literal(binary)
+    print(process_chunk(binary))
 
+    print(packages)
 
-
-    print("The answer to part 1 is:", sum(version), version)
+    print("The answer to part 1 is:")
 
     end = time.time()
 
